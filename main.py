@@ -4,6 +4,7 @@ global DEST; DEST = "./site"
 global NAME; NAME = "ATAVATA"
 global DOMAIN; DOMAIN = "www.sc-lewis.com"
 global LICENSE; LICENSE = "NULL"
+global TABLEOFCONTENTS; TABLEOFCONTENTS = "toc"
 
 def lexicon():
     return glob(INCL+"/*.htm")
@@ -14,7 +15,7 @@ def init_site_file(lex_f):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         return f, fn
 
-def parse_header(f, fn, head, cat_dict):
+def write_header(f, fn, head, cat_dict):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'>")
         f.write("<header>")
@@ -41,6 +42,14 @@ def parse_header(f, fn, head, cat_dict):
         f.write("</header>")
         for line in head:
             f.write(line)
+        # if fn == TABLEOFCONTENTS:
+        #     for key in cat_dict.keys():
+        #         f.write(key + " " + str(cat_dict[key]))
+        f.close()
+def write_toc_body(cat_dict):
+    with open(DEST+'/'+TABLEOFCONTENTS+'.html', 'a') as f:
+        for key in cat_dict.keys():
+            f.write(key + " " + str(cat_dict[key]))
         f.close()
 
 def parse_body(lex_f, fn, cat_dict):
@@ -58,7 +67,7 @@ def parse_body(lex_f, fn, cat_dict):
             body_lines = inc_lines
         inc.close()
     with open(DEST+'/'+fn+'.html', 'a') as f:
-        parse_header(f, fn, head, cat_dict)
+        write_header(f, fn, head, cat_dict)
         for line in body_lines:
             f.write(line) #f.write(markdown.markdown(line))
         f.close()
@@ -71,9 +80,6 @@ def write_footer(fn):
         f.write("<a href='" + LICENSE + "' target='_blank'>BY-NC-SA 4.0</a>")
         f.write("</footer>")
 
-def toc_dict(files):
-    # generate table of contents dictionary
-    return
 def preparse_header(lex_f, fn, categories):
     with open(lex_f) as inc:
         # SLICE out and process header lines
@@ -92,6 +98,12 @@ def preparse_header(lex_f, fn, categories):
             head = []
         inc.close()
     return categories
+
+def write_table_of_contents(cat_dict):
+    write_header(None, TABLEOFCONTENTS, [], cat_dict)
+    write_toc_body(cat_dict)
+    write_footer(TABLEOFCONTENTS)
+    return
     
 def finalize(f, fn):
     try:
@@ -107,6 +119,8 @@ def engine():
         f, fn = init_site_file(lex_f)
         preparse_header(lex_f, fn, categories)
     print(categories)
+    # make table of contents
+    write_table_of_contents(categories)
     # main processing loop
     for lex_f in lex:
         f, fn = init_site_file(lex_f)

@@ -46,6 +46,25 @@ def write_header(f, fn, head, cat_dict):
         #     for key in cat_dict.keys():
         #         f.write(key + " " + str(cat_dict[key]))
         f.close()
+    
+def write_nav(f, fn, cat_dict):
+    with open(DEST+'/'+fn+'.html', 'w') as f:
+        f.write("<nav>")
+        f.write("<ul>")
+        # find this filename as a value in the category dict. Return the category.
+        match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
+        if match_cat:
+            f.write(match_cat)
+            # write other members of this category in nav.
+            for val in cat_dict[match_cat]:
+                if val == fn:
+                    f.write("<li><a href='"+val+".html' class='_self'>" + val + "</a></li>")
+                else:
+                    f.write("<li><a href='"+val+".html'>" + val + "</a></li>")
+        f.write("</ul>")
+        f.write("</nav>")
+    return
+
 def write_toc_body(cat_dict):
     with open(DEST+'/'+TABLEOFCONTENTS+'.html', 'a') as f:
         for key in cat_dict.keys():
@@ -68,6 +87,7 @@ def parse_body(lex_f, fn, cat_dict):
         inc.close()
     with open(DEST+'/'+fn+'.html', 'a') as f:
         write_header(f, fn, head, cat_dict)
+        write_nav(f, fn, cat_dict)
         for line in body_lines:
             f.write(line) #f.write(markdown.markdown(line))
         f.close()
@@ -118,7 +138,6 @@ def engine():
     for lex_f in lex:
         f, fn = init_site_file(lex_f)
         preparse_header(lex_f, fn, categories)
-    print(categories)
     # make table of contents
     write_table_of_contents(categories)
     # main processing loop

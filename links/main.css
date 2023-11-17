@@ -1,0 +1,22 @@
+nav a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    display: inline-block;
+    font-weight: bold;
+  }
+  
+  nav a:hover {
+    background-color: #eee;
+    color: #555;
+  }
+
+  nav {
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  nav li {
+    display: inline;
+    margin-right: 15px;
+  }

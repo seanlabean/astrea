@@ -1,7 +1,7 @@
 from glob import glob
 global INCL; INCL = "./inc"
 global DEST; DEST = "./site"
-global NAME; NAME = "ATAVATA"
+global NAME; NAME = "S. C. Lewis"
 global DOMAIN; DOMAIN = "www.sc-lewis.com"
 global LICENSE; LICENSE = "NULL"
 global TABLEOFCONTENTS; TABLEOFCONTENTS = "toc"
@@ -18,28 +18,10 @@ def init_site_file(lex_f):
 def write_header(f, fn, head, cat_dict):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'>")
-        f.write("<header>")
-        f.write("<a href='home.html'><img src='../media/interface/logo.svg' alt='" + NAME + "' height='50'></a>")
-        f.write("</header>")
-        f.write("<head>")
-        f.write(
-            "<meta charset='utf-8'>"
-            "<meta name='thumbnail' content='" + DOMAIN + "media/services/rss.jpg' />"
-            "<meta name='viewport' content='width=device-width,initial-scale=1'>"
-            "<link rel='alternate' type='application/rss+xml' title='RSS Feed' "
-            "href='../links/rss.xml' />"
-            "<link rel='stylesheet' type='text/css' href='../links/main.css'>"
-            "<link rel='shortcut icon' type='image/png' "
-            "href='../media/services/shortcut.png'>"
-            "<title>" + NAME + " &mdash; " +  fn + "</title>"
-            )
-        f.write("</head>")
+        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, inital-scale=1'/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/asterix.png' type='image/png' rel='shortcut icon'/>")
+        f.write("<title>" + NAME + "&mdash;" + fn + "</title></head>")
         f.write("<body>")
-
-        # header
-        f.write("<header>")
-        f.write("<a href='home.html'><img src='../media/interface/logo.svg' alt='" + NAME + "' height='50'></a>")
-        f.write("</header>")
+        f.write("<header><a href='home.html'><img src='../media/icon/henge.png' width='160' height='80'></a></header>")
         for line in head:
             f.write(line)
         # if fn == TABLEOFCONTENTS:
@@ -48,27 +30,32 @@ def write_header(f, fn, head, cat_dict):
         f.close()
     
 def write_nav(f, fn, cat_dict):
-    with open(DEST+'/'+fn+'.html', 'w') as f:
+    with open(DEST+'/'+fn+'.html', 'a') as f:
         f.write("<nav>")
         f.write("<ul>")
         # find this filename as a value in the category dict. Return the category.
         match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
-        if match_cat:
-            f.write(match_cat)
-            # write other members of this category in nav.
-            for val in cat_dict[match_cat]:
-                if val == fn:
-                    f.write("<li><a href='"+val+".html' class='_self'>" + val + "</a></li>")
-                else:
-                    f.write("<li><a href='"+val+".html'>" + val + "</a></li>")
+        # make nav bar for each page. note which category the current page belongs AND mark current page in bar
+        for cat, pages in cat_dict.items():
+            if cat == 'no-proc': continue
+            f.write("<h2>"+cat+"</h2>") if cat == match_cat else f.write("<h4>"+cat+"</h4>")
+            for page in pages: f.write("<li><a href='"+page+".html' class='_self'>" + page + "</a></li>") \
+                if page == fn else f.write("<li><a href='"+page+".html'>" + page + "</a></li>")
+            
         f.write("</ul>")
         f.write("</nav>")
     return
 
 def write_toc_body(cat_dict):
     with open(DEST+'/'+TABLEOFCONTENTS+'.html', 'a') as f:
-        for key in cat_dict.keys():
-            f.write(key + " " + str(cat_dict[key]))
+        f.write("<body>")
+        f.write("<main>")
+        f.write("<ul>")
+        for page in sorted([value for values in cat_dict.values() for value in values]):
+            f.write("<li><a href='"+page+".html'>"+page+"</a></li>")
+            #f.write(key + " " + str(cat_dict[key]))
+        f.write("</ul>")
+        f.write("</main>")
         f.close()
 
 def parse_body(lex_f, fn, cat_dict):
@@ -99,6 +86,8 @@ def write_footer(fn):
         f.write("<b>Sean C. Lewis</b> © 2023 — ")
         f.write("<a href='" + LICENSE + "' target='_blank'>BY-NC-SA 4.0</a>")
         f.write("</footer>")
+        f.write("</body>")
+        f.write("</html>")
 
 def preparse_header(lex_f, fn, categories):
     with open(lex_f) as inc:

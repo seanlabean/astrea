@@ -1,22 +1,13 @@
-nav a {
-    text-decoration: none;
-    color: #333;
-    padding: 10px 15px;
-    display: inline-block;
-    font-weight: bold;
-  }
-  
-  nav a:hover {
-    background-color: #eee;
-    color: #555;
-  }
+*:focus         { outline: none}
+::selection       { background: #eee; opacity:1.0; color:#000; padding:10px; /* Safari */ }
 
-  nav {
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ccc;
-  }
+body { background:#fff; color:#000; overflow-x: hidden; font-family: sans-serif; padding:0; margin:0; }
+header { padding: 45px; border-bottom: 1px solid #800c0c; }
+nav { padding: 45px; float: left; }
 
-  nav li {
-    display: inline;
-    margin-right: 15px;
-  }
+main { padding: 45px; float:left; max-width:700px; }
+main img { width:100%; max-width: 700px; margin-bottom: 15px;}
+main > * { max-width: 600px; margin-bottom: 30px }
+
+footer { line-height: 30px; clear:both; padding:45px; }
+footer hr { margin-bottom: 15px }

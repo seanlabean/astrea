@@ -22,11 +22,9 @@ def write_header(f, fn, head, cat_dict):
         f.write("<title>" + NAME + "&mdash;" + fn + "</title></head>")
         f.write("<body>")
         f.write("<header><a href='home.html'><img src='../media/icon/henge.png' width='160' height='80'></a></header>")
-        for line in head:
-            f.write(line)
-        # if fn == TABLEOFCONTENTS:
-        #     for key in cat_dict.keys():
-        #         f.write(key + " " + str(cat_dict[key]))
+        # can loop over header lines and do specific things based on contents
+        #for line in head:
+            #f.write(line)
         f.close()
     
 def write_nav(f, fn, cat_dict):

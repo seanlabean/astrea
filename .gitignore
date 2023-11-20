@@ -157,5 +157,9 @@ cython_debug/
 #.idea/
 
 # astrea
-site/
-inc/
+site/*
+!site/home.html
+!site/svanne.html
+inc/*
+!inc/home.htm
+!inc/svanne.htm

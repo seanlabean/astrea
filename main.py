@@ -18,10 +18,10 @@ def init_site_file(lex_f):
 def write_header(f, fn, head, cat_dict):
     with open(DEST+'/'+fn+'.html', 'w') as f:
         f.write("<!DOCTYPE html><html lang='en'>")
-        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, inital-scale=1'/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/asterix.png' type='image/png' rel='shortcut icon'/>")
+        f.write("<meta charset='utf-8'/><meta name='viewport' content='width=device-width, inital-scale=1'/><link href='../links/main.css' type='text/css' rel='stylesheet'/><link href='../media/icon.png' type='image/png' rel='shortcut icon'/>")
         f.write("<title>" + NAME + "&mdash;" + fn + "</title></head>")
         f.write("<body>")
-        f.write("<header><a href='home.html'><img src='../media/icon/henge.png' width='160' height='80'></a></header>")
+        f.write("<header><a href='home.html'><img src='../media/main.png' width='160' height='80'></a></header>")
         # can loop over header lines and do specific things based on contents
         #for line in head:
             #f.write(line)
@@ -29,19 +29,27 @@ def write_header(f, fn, head, cat_dict):
     
 def write_nav(f, fn, cat_dict):
     with open(DEST+'/'+fn+'.html', 'a') as f:
-        f.write("<nav>")
-        f.write("<ul>")
+        f.write("<nav><details open>\n")
+        f.write("<summary>Menu</summary>\n")
+        f.write("<section class='site-nav'>\n")
+        # 
+        f.write("<section>\n<ul class='nobull capital'>\n<li><a href='home.html'>take me home</a></li></ul>\n</section>\n")
         # find this filename as a value in the category dict. Return the category.
         match_cat = next((key for key, values in cat_dict.items() if fn in values), None)
         # make nav bar for each page. note which category the current page belongs AND mark current page in bar
         for cat, pages in cat_dict.items():
             if cat == 'no-proc': continue
-            f.write("<h2>"+cat+"</h2>") if cat == match_cat else f.write("<h4>"+cat+"</h4>")
-            for page in pages: f.write("<li><a href='"+page+".html' class='_self'>" + page + "</a></li>") \
-                if page == fn else f.write("<li><a href='"+page+".html'>" + page + "</a></li>")
-            
-        f.write("</ul>")
-        f.write("</nav>")
+            f.write("<section>\n")
+            f.write("<h2 class='self'>"+cat+"</h2>\n") if cat == match_cat else f.write("<h2><a id='"+cat+"'>"+cat+"</a></h2>\n")
+            f.write("<ul class='nobull capital'>\n")
+            for page in pages: f.write("<li><a href='"+page+".html' class='self'>" + page + "</a></li>\n") \
+                if page == fn else f.write("<li><a href='"+page+".html'>" + page + "</a></li>\n")
+            f.write("</ul>\n")
+            f.write("</section>\n")
+
+        f.write("</section>\n")
+        f.write("</details></nav>\n")
+        f.write("<!-- Generated file, do not edit -->\n")
     return
 
 def write_toc_body(cat_dict):

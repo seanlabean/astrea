@@ -1,4 +1,5 @@
 from glob import glob
+from time import time
 global INCL; INCL = "./inc"
 global DEST; DEST = "./site"
 global NAME; NAME = "S. C. Lewis"
@@ -130,6 +131,7 @@ def engine():
     lex = lexicon()
     # preprocess loop to get table of contents (which files belong to which categories)
     categories = {}
+    tock = time()
     for lex_f in lex:
         f, fn = init_site_file(lex_f)
         preparse_header(lex_f, fn, categories)
@@ -141,5 +143,7 @@ def engine():
         parse_body(lex_f, fn, categories)
         write_footer(fn)
         finalize(f, fn)
+    tick = time()
+    print(f"Processed {len(lex)} files in {1000*(tick-tock):.5} miliseconds.")
 if __name__ == "__main__":
     engine()

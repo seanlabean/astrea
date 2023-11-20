@@ -1,0 +1,43 @@
+---
+category: compsci
+---
+<main>
+<br>
+<h2>Svanne: <br>Breaking From Gregorian Monotony</h2>
+<p>
+Svanne is an alphabetic date format. The Svannic calendar has 26 months each consisting of 2 weeks of 7 days each. Each month's name corresponds to one of the 26 letters of the alphabet.
+</p>
+<p>
+The purpose of this special calendar is to record daily or weekly activity logs starting at year 0 when the tracking started. For example, if a blog was initiated in 2006 (which becomes its year 0), the arvelie date 13A05 is equivalent to January 6th of the 14th year after blog inception (2020).
+</p>
+<ul>
+<li><code>01D07</code> &mdash; 2007-02-18</li>
+<li><code>02A00</code> &mdash; 2008-01-01</li>
+<li><code>03+00</code> &mdash; 2009-12-31</li>
+</ul>
+<p>
+The 365th day of the year is the <i>Year Day</i>(+00), followed by the <i>Leap Day</i>(+01) on leap years.
+</p>
+<p>
+To calculate the day of the year, convert the month's letter to a value, starting with 0 for A, multiply by 14 and add the day of the month. For example, <code>J05</code> is equal to <code>(+ 5 (* 9 14))</code>, or 131.
+</p>
+<p>
+I have made a script to calculate any Svannic date of the user's choosing.  to reveal the available input flags and required syntax.
+<a href="https://github.com/seanlabean/PythonProjects/tree/master/Svanne" target="_out">Github</a>
+<pre>
+$ python svanne.py --help
+usage: svanne.py [-h] [-i INCEPTION] [-d DATE] [-npg] [-nps]
+optional arguments:
+-h, --help            show this help message and exit
+-i INCEPTION, --inception INCEPTION
+              Inception year of repository.
+-d DATE, --date DATE  
+              Date to convert. Must be in dd-mm-yyyy format.
+-npg, --no_print_gregorian
+              Dont print Gregorian date format.
+-nps, --no_print_svanne
+              Dont print Svanne date format.
+</pre>
+</p>
+
+</main>
